@@ -1,16 +1,18 @@
 package br.com.ferdbgg.androidjavaagenda;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.Arrays;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -18,6 +20,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        final MaterialToolbar toolbar = findViewById(R.id.main_top_app_bar);
+        setSupportActionBar(toolbar);
 
         final var nomesAlunos =
                 Arrays.asList("Maria", "João", "Antônio", "José", "Ana Clara", "Emília",

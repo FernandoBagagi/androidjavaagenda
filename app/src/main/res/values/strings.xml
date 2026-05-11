@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Android Java Agenda</string>
 
+    <string name="main_top_app_bar_title">Lista de Alunos</string>
     <string name="main_teste_text_view">Esse é um teste de TextView feito por layout</string>
 </resources>
