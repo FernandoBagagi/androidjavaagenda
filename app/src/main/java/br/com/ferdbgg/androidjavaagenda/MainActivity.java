@@ -11,11 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,27 +36,26 @@ public class MainActivity extends AppCompatActivity {
         final MaterialToolbar toolbar = findViewById(R.id.main_top_app_bar);
         setSupportActionBar(toolbar);
 
-        final var nomesAlunos =
-                Arrays.asList("Maria", "João", "Antônio", "José", "Ana Clara", "Emília",
-                        "Ana Maria", "Felipe", "Alan", "Carla", "Luan", "Bernardo", "Ricardo",
-                        "Daniela", "Omar", "Vitória", "Samara", "Roberto", "Damião", "Júlio",
-                        "Tadeu", "Tamires", "Talita", "Gabriel", "Fabrício", "Jamile", "Heitor"
-                );
-
-        final var listaAlunosView = (ListView) findViewById(R.id.main_lista_alunos);
-        listaAlunosView.setAdapter(
-                new ArrayAdapter<>(
-                        this,
-                        android.R.layout.simple_list_item_1,
-                        nomesAlunos
-                )
-        );
+        final RecyclerView recyclerAlunosView = findViewById(R.id.main_lista_alunos);
+        // Define como lista vertical
+        recyclerAlunosView.setLayoutManager(new LinearLayoutManager(this));
+        // Conecta o adapter à recycleView
+        final var listaAlunosAdapter = new ListaAlunosAdapter(this.getNomesAlunos());
+        recyclerAlunosView.setAdapter(listaAlunosAdapter);
 
         final ExtendedFloatingActionButton fabAddAluno = findViewById(R.id.main_floating_action_button);
         fabAddAluno.setOnClickListener(this::onClickFabAddAluno);
 
         Toast.makeText(this, "Esse é um alerta", Toast.LENGTH_LONG).show();
 
+    }
+
+    private List<String> getNomesAlunos() {
+        return Arrays.asList("Maria", "João", "Antônio", "José", "Ana Clara", "Emília",
+                "Ana Maria", "Felipe", "Alan", "Carla", "Luan", "Bernardo", "Ricardo",
+                "Daniela", "Omar", "Vitória", "Samara", "Roberto", "Damião", "Júlio",
+                "Tadeu", "Tamires", "Talita", "Gabriel", "Fabrício", "Jamile", "Heitor"
+        );
     }
 
     private WindowInsetsCompat adicionarPaddingSystemBarBottom(View view, WindowInsetsCompat insets) {
