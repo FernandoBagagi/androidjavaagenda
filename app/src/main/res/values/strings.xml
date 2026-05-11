@@ -3,4 +3,5 @@
 
     <string name="main_top_app_bar_title">Lista de Alunos</string>
     <string name="main_teste_text_view">Esse é um teste de TextView feito por layout</string>
+    <string name="main_floating_action_button_text">Adicionar Aluno</string>
 </resources>
