@@ -4,9 +4,21 @@
     <string name="main_top_app_bar_title">Lista de Alunos</string>
     <string name="main_teste_text_view">Esse é um teste de TextView feito por layout</string>
     <string name="main_floating_action_button_text">Adicionar Aluno</string>
+
     <string name="formulario_aluno_top_app_bar_title">Formulário aluno</string>
+    <string name="formulario_aluno_id">ID</string>
     <string name="formulario_aluno_nome">Nome</string>
     <string name="formulario_aluno_email">E-mail</string>
     <string name="formulario_aluno_telefone">Telefone</string>
+    <string name="formulario_aluno_genero_masculino">Masculino</string>
+    <string name="formulario_aluno_genero_feminino">Feminino</string>
+    <string name="formulario_aluno_genero_nao_binario">Não-binare</string>
+    <string name="formulario_aluno_label_aluno">Aluno</string>
+    <string name="formulario_aluno_label_aluna">Aluna</string>
+    <string name="formulario_aluno_label_alune">Alune</string>
+    <string name="formulario_aluno_label_novo_aluno">Novo aluno</string>
+    <string name="formulario_aluno_label_nova_aluna">Nova aluna</string>
+    <string name="formulario_aluno_label_novu_alune">Novu alune</string>
     <string name="formulario_aluno_botao_salvar">Salvar</string>
+    <string name="formulario_aluno_botao_salvar_alteracoes">Salvar alterações</string>
 </resources>
