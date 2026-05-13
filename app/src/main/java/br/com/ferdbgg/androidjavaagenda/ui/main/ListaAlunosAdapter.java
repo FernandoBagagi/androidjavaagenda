@@ -1,4 +1,4 @@
-package br.com.ferdbgg.androidjavaagenda;
+package br.com.ferdbgg.androidjavaagenda.ui.main;
 
 import android.view.LayoutInflater;
 import android.view.View;

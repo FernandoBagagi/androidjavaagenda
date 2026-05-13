@@ -1,4 +1,4 @@
-package br.com.ferdbgg.androidjavaagenda;
+package br.com.ferdbgg.androidjavaagenda.ui.main;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +18,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 
 import java.util.Arrays;
 import java.util.List;
+
+import br.com.ferdbgg.androidjavaagenda.R;
 
 public class MainActivity extends AppCompatActivity {
 
