@@ -2,10 +2,9 @@ package br.com.ferdbgg.androidjavaagenda;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -27,11 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_main);
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
-                this::adicionarPaddingSystemBarBottom);
+                this::addSystemBarPadding
+        );
 
         final MaterialToolbar toolbar = findViewById(R.id.main_top_app_bar);
         setSupportActionBar(toolbar);
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private WindowInsetsCompat adicionarPaddingSystemBarBottom(View view, WindowInsetsCompat insets) {
+    private WindowInsetsCompat addSystemBarPadding(View view, WindowInsetsCompat insets) {
         Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
         // Adiciona padding na parte de baixo igual à altura da barra de navegação do celular
