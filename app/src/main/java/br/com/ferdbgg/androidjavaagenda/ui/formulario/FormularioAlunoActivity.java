@@ -1,6 +1,7 @@
 package br.com.ferdbgg.androidjavaagenda.ui.formulario;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -24,6 +25,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private FormularioViewModel viewModel;
 
+    private boolean isEdicao = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,13 +44,16 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         final MaterialToolbar toolbar = findViewById(R.id.formulario_aluno_top_app_bar);
         setSupportActionBar(toolbar);
 
+        final Button botao = findViewById(R.id.formulario_aluno_botao_salvar);
+        botao.setOnClickListener(this::onClickBotaoListener);
+
         viewModel = new ViewModelProvider(this).get(FormularioViewModel.class);
         viewModel.tituloAppbar.observe(this, this::setLabelAppbar);
-        viewModel.textoBotao.observe(this, this::setLabelBotaoSalvar);
+        viewModel.textoBotao.observe(this, botao::setText);
 
-        final var aluno = getAlunoEdicao();
-        if (ModoFormulario.EDICAO.equals(getModoFormulario()) && aluno != null) {
-            edicao(aluno);
+        final Aluno alunoEdicao = getAlunoEdicao();
+        if (ModoFormulario.EDICAO.equals(getModoFormulario()) && alunoEdicao != null) {
+            edicao(alunoEdicao);
         } else {
             criacao();
         }
@@ -77,21 +83,21 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private void criacao() {
-        mostrarCampoId(false);
+        esconderCampoId();
         viewModel.modoFormulario.setValue(ModoFormulario.CRIACAO);
         viewModel.generoSelecionado.setValue(GeneroEnum.MASCULINO);
     }
 
     private void edicao(Aluno aluno) {
-        mostrarCampoId(true);
+        isEdicao = true;
         viewModel.modoFormulario.setValue(ModoFormulario.EDICAO);
         viewModel.generoSelecionado.setValue(aluno.genero());
         preencherCamposFomulario(aluno);
     }
 
-    private void mostrarCampoId(boolean mostrarCampo) {
+    private void esconderCampoId() {
         final View campoId = findViewById(R.id.formulario_aluno_id_layout);
-        campoId.setVisibility(mostrarCampo ? View.VISIBLE : View.GONE);
+        campoId.setVisibility(View.GONE);
     }
 
     private ModoFormulario getModoFormulario() {
@@ -122,9 +128,33 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         }
     }
 
-    private void setLabelBotaoSalvar(String label) {
-        final Button botao = findViewById(R.id.formulario_aluno_botao_salvar);
-        botao.setText(label);
+    private void onClickBotaoListener(View view) {
+        // TODO: validar formulário
+        final Aluno alunoSalvar = getAlunoDadosFormulario();
+        // TODO: persistir aluno
+        // TODO: voltar pra tela anterior
+    }
+
+    private Aluno getAlunoDadosFormulario() {
+
+        final Integer id = isEdicao
+                ? Integer.parseInt(encontrarEPegarValorCampo(R.id.formulario_aluno_id_text))
+                : 0;
+        final String nome = encontrarEPegarValorCampo(R.id.formulario_aluno_nome_text);
+        final String email = encontrarEPegarValorCampo(R.id.formulario_aluno_email_text);
+        final String telefone = encontrarEPegarValorCampo(R.id.formulario_aluno_telefone_text);
+        final GeneroEnum genero = viewModel.generoSelecionado.getValue();
+
+        return new Aluno(id, nome, email, telefone, genero);
+
+    }
+
+    private String encontrarEPegarValorCampo(int campoId) {
+
+        final TextInputEditText campo = findViewById(campoId);
+        final Editable textoCampo = campo.getText();
+        return textoCampo == null ? "" : textoCampo.toString();
+
     }
 
 }
