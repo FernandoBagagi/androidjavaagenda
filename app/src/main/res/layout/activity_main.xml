@@ -21,9 +21,9 @@
             android:id="@+id/main_top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
             app:title="@string/main_top_app_bar_title"
             app:titleTextColor="@android:color/white"
-            android:background="?attr/colorPrimary"
             style="@style/Widget.Material3.Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -17,12 +17,12 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/formulario_aluno_top_app_bar"
-            style="@style/Widget.Material3.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:title="@string/formulario_aluno_top_app_bar_title"
-            app:titleTextColor="@android:color/white" />
+            app:titleTextColor="@android:color/white"
+            style="@style/Widget.Material3.Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -50,7 +50,6 @@
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp"
                 app:endIconMode="clear_text"
-                app:helperText="@string/formulario_aluno_id"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_add">
 
@@ -76,7 +75,6 @@
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp"
                 app:endIconMode="clear_text"
-                app:helperText="@string/formulario_aluno_nome"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_add">
 
@@ -101,7 +99,6 @@
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp"
                 app:endIconMode="clear_text"
-                app:helperText="@string/formulario_aluno_email"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_add">
 
@@ -126,7 +123,6 @@
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp"
                 app:endIconMode="clear_text"
-                app:helperText="@string/formulario_aluno_telefone"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_add">
 

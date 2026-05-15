@@ -24,8 +24,9 @@ import br.com.ferdbgg.androidjavaagenda.models.pojos.Aluno;
 public class FormularioAlunoActivity extends AppCompatActivity {
 
     private FormularioViewModel viewModel;
-
-    private boolean isEdicao = false;
+    private Button botao;
+    private RadioGroup generoGroup;
+    private static final int DEFAULT_ID_VALUE_RADIO_BUTTON = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +45,15 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         final MaterialToolbar toolbar = findViewById(R.id.formulario_aluno_top_app_bar);
         setSupportActionBar(toolbar);
 
-        final Button botao = findViewById(R.id.formulario_aluno_botao_salvar);
+        botao = findViewById(R.id.formulario_aluno_botao_salvar);
         botao.setOnClickListener(this::onClickBotaoListener);
 
+        generoGroup = findViewById(R.id.formulario_aluno_radio_group);
+        generoGroup.setOnCheckedChangeListener(this::radioGroupListener);
+
         viewModel = new ViewModelProvider(this).get(FormularioViewModel.class);
-        viewModel.tituloAppbar.observe(this, this::setLabelAppbar);
-        viewModel.textoBotao.observe(this, botao::setText);
+        viewModel.idStringTituloAppbar.observe(this, this::setTitleAppbar);
+        viewModel.idStringTextoBotao.observe(this, this::setTextoBotao);
 
         final Aluno alunoEdicao = getAlunoEdicao();
         if (ModoFormulario.EDICAO.equals(getModoFormulario()) && alunoEdicao != null) {
@@ -57,14 +61,36 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         } else {
             criacao();
         }
-
-        final RadioGroup generoGroup = findViewById(R.id.formulario_aluno_radio_group);
-        generoGroup.setOnCheckedChangeListener(this::radioGroupListener);
+        marcarOpcaoRadioGroup();
 
     }
 
     private void radioGroupListener(RadioGroup group, int checkedId) {
-        viewModel.definirGeneroPorId(checkedId);
+        if (checkedId == R.id.formulario_aluno_radio_feminino) {
+            viewModel.mudarGeneroSelecionado(GeneroEnum.FEMININO);
+        } else if (checkedId == R.id.formulario_aluno_radio_nao_binario) {
+            viewModel.mudarGeneroSelecionado(GeneroEnum.NAO_BINARE);
+        } else {
+            viewModel.mudarGeneroSelecionado(GeneroEnum.MASCULINO);
+        }
+    }
+
+    private void marcarOpcaoRadioGroup() {
+        final int idRadio = getIdRadioButtonGeneroSelecionado();
+        if(DEFAULT_ID_VALUE_RADIO_BUTTON == idRadio) {
+            generoGroup.clearCheck();
+        } else {
+            generoGroup.check(idRadio);
+        }
+    }
+
+    private int getIdRadioButtonGeneroSelecionado() {
+        return switch (viewModel.generoSelecionado.getValue()) {
+            case MASCULINO -> R.id.formulario_aluno_radio_masculino;
+            case FEMININO -> R.id.formulario_aluno_radio_feminino;
+            case NAO_BINARE -> R.id.formulario_aluno_radio_nao_binario;
+            default -> DEFAULT_ID_VALUE_RADIO_BUTTON;
+        };
     }
 
     private WindowInsetsCompat addSystemBarPadding(View view, WindowInsetsCompat insets) {
@@ -73,7 +99,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
         view.setPadding(
                 systemBars.left,
-                systemBars.top,
+                0,
                 systemBars.right,
                 systemBars.bottom
         );
@@ -85,13 +111,12 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void criacao() {
         esconderCampoId();
         viewModel.modoFormulario.setValue(ModoFormulario.CRIACAO);
-        viewModel.generoSelecionado.setValue(GeneroEnum.MASCULINO);
+        viewModel.mudarGeneroSelecionado(GeneroEnum.MASCULINO);
     }
 
     private void edicao(Aluno aluno) {
-        isEdicao = true;
         viewModel.modoFormulario.setValue(ModoFormulario.EDICAO);
-        viewModel.generoSelecionado.setValue(aluno.genero());
+        viewModel.mudarGeneroSelecionado(aluno.genero());
         preencherCamposFomulario(aluno);
     }
 
@@ -121,11 +146,17 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campo.setText(valor);
     }
 
-    private void setLabelAppbar(String label) {
+    private void setTitleAppbar(int idString) {
         final var actionBar = getSupportActionBar();
         if (actionBar != null) {
+            final String label = getString(idString);
             actionBar.setTitle(label);
         }
+    }
+
+    private void setTextoBotao(int idString) {
+        final String texto = getString(idString);
+        botao.setText(texto);
     }
 
     private void onClickBotaoListener(View view) {
@@ -137,7 +168,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private Aluno getAlunoDadosFormulario() {
 
-        final Integer id = isEdicao
+        final Integer id = viewModel.isEdicao()
                 ? Integer.parseInt(encontrarEPegarValorCampo(R.id.formulario_aluno_id_text))
                 : 0;
         final String nome = encontrarEPegarValorCampo(R.id.formulario_aluno_nome_text);

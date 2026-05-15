@@ -9,61 +9,48 @@ import br.com.ferdbgg.androidjavaagenda.models.enums.ModoFormulario;
 
 public class FormularioViewModel extends ViewModel {
 
-    public final MutableLiveData<String> tituloAppbar = new MutableLiveData<>();
-    public final MutableLiveData<String> textoBotao = new MutableLiveData<>();
+    public final MutableLiveData<Integer> idStringTituloAppbar = new MutableLiveData<>();
+    public final MutableLiveData<Integer> idStringTextoBotao = new MutableLiveData<>();
     public final MutableLiveData<ModoFormulario> modoFormulario = new MutableLiveData<>();
-    public final MutableLiveData<GeneroEnum> generoSelecionado = new MutableLiveData<>();
+    public final MutableLiveData<GeneroEnum> generoSelecionado = new MutableLiveData<>(GeneroEnum.MASCULINO);
 
-    public void definirGeneroPorId(int checkedId) {
+    public void mudarGeneroSelecionado(GeneroEnum genero) {
+        generoSelecionado.setValue(genero);
+        atualizarTextosDeAcordoComGenero();
+    }
 
-        if (checkedId == R.id.formulario_aluno_radio_feminino) {
-            generoSelecionado.setValue(GeneroEnum.FEMININO);
-        } else if (checkedId == R.id.formulario_aluno_radio_nao_binario) {
-            generoSelecionado.setValue(GeneroEnum.NAO_BINARE);
+    public boolean isEdicao() {
+        return ModoFormulario.EDICAO.equals(modoFormulario.getValue());
+    }
+    private void atualizarTextosDeAcordoComGenero() {
+
+        if (isEdicao()) {
+            idStringTituloAppbar.setValue(getLabelAppbarEdicao());
+            idStringTextoBotao.setValue(R.string.formulario_aluno_botao_salvar_alteracoes);
         } else {
-            generoSelecionado.setValue(GeneroEnum.MASCULINO);
-        }
-
-        atualizarTextosDeAcordoComGenenro();
-
-    }
-    private void atualizarTextosDeAcordoComGenenro() {
-
-        if (ModoFormulario.EDICAO.equals(modoFormulario.getValue())) {
-            tituloAppbar.setValue(getLabelAppbarEdicao());
-            textoBotao.setValue(String.valueOf(R.string.formulario_aluno_botao_salvar_alteracoes));
-        } else {
-            tituloAppbar.setValue(getLabelAppbarCriacao());
-            textoBotao.setValue(String.valueOf(R.string.formulario_aluno_botao_salvar));
+            idStringTituloAppbar.setValue(getLabelAppbarCriacao());
+            idStringTextoBotao.setValue(R.string.formulario_aluno_botao_salvar);
         }
 
     }
 
-    private String getLabelAppbarEdicao() {
+    private Integer getLabelAppbarEdicao() {
 
-        if (GeneroEnum.FEMININO.equals(generoSelecionado.getValue())) {
-            return String.valueOf(R.string.formulario_aluno_label_aluna);
-        }
-
-        if (GeneroEnum.NAO_BINARE.equals(generoSelecionado.getValue())) {
-            return String.valueOf(R.string.formulario_aluno_label_alune);
-        }
-
-        return String.valueOf(R.string.formulario_aluno_label_aluno);
+        return switch (generoSelecionado.getValue()) {
+            case FEMININO -> R.string.formulario_aluno_label_aluna;
+            case NAO_BINARE -> R.string.formulario_aluno_label_alune;
+            default -> R.string.formulario_aluno_label_aluno;
+        };
 
     }
 
-    private String getLabelAppbarCriacao() {
+    private Integer getLabelAppbarCriacao() {
 
-        if (GeneroEnum.FEMININO.equals(generoSelecionado.getValue())) {
-            return String.valueOf(R.string.formulario_aluno_label_nova_aluna);
-        }
-
-        if (GeneroEnum.NAO_BINARE.equals(generoSelecionado.getValue())) {
-            return String.valueOf(R.string.formulario_aluno_label_novu_alune);
-        }
-
-        return String.valueOf(R.string.formulario_aluno_label_novo_aluno);
+        return switch (generoSelecionado.getValue()) {
+            case FEMININO -> R.string.formulario_aluno_label_nova_aluna;
+            case NAO_BINARE -> R.string.formulario_aluno_label_novu_alune;
+            default -> R.string.formulario_aluno_label_novo_aluno;
+        };
 
     }
 
