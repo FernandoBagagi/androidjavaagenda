@@ -18,7 +18,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.ferdbgg.androidjavaagenda.R;
 import br.com.ferdbgg.androidjavaagenda.models.enums.GeneroEnum;
-import br.com.ferdbgg.androidjavaagenda.models.enums.ModoFormulario;
 import br.com.ferdbgg.androidjavaagenda.models.pojos.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
@@ -56,7 +55,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         viewModel.idStringTextoBotao.observe(this, this::setTextoBotao);
 
         final Aluno alunoEdicao = getAlunoEdicao();
-        if (ModoFormulario.EDICAO.equals(getModoFormulario()) && alunoEdicao != null) {
+        if (alunoEdicao != null && alunoEdicao.id() > 0) {
             edicao(alunoEdicao);
         } else {
             criacao();
@@ -89,7 +88,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private Aluno getAlunoDadosFormulario() {
 
-        final Integer id = viewModel.isEdicao()
+        final int id = viewModel.isModoEdicao()
                 ? Integer.parseInt(encontrarEPegarValorCampo(R.id.formulario_aluno_id_text))
                 : 0;
         final String nome = encontrarEPegarValorCampo(R.id.formulario_aluno_nome_text);
@@ -133,16 +132,12 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private Aluno getAlunoEdicao() {
+        //TODO: transformar essa key em constante
         return IntentCompat.getSerializableExtra(getIntent(), "aluno", Aluno.class);
-    }
-    //TODO: transformar essas keys em constantes
-    private ModoFormulario getModoFormulario() {
-        return IntentCompat
-                .getSerializableExtra(getIntent(), "modoFormulario", ModoFormulario.class);
     }
 
     private void edicao(Aluno aluno) {
-        viewModel.modoFormulario.setValue(ModoFormulario.EDICAO);
+        viewModel.setModoFomularioToEdicao();
         viewModel.mudarGeneroSelecionado(aluno.genero());
         preencherCamposFomulario(aluno);
     }
@@ -161,7 +156,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void criacao() {
         esconderCampoId();
-        viewModel.modoFormulario.setValue(ModoFormulario.CRIACAO);
+        viewModel.setModoFomularioToCriacao();
         viewModel.mudarGeneroSelecionado(GeneroEnum.MASCULINO);
     }
 

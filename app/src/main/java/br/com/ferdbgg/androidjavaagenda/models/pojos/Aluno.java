@@ -6,7 +6,7 @@ import java.io.Serializable;
 import br.com.ferdbgg.androidjavaagenda.models.enums.GeneroEnum;
 
 public record Aluno(
-        Integer id,
+        int id,
         String nome,
         String email,
         String telefone,
